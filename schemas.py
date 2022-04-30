@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, validator, Field
 from datetime import date
 
 class Genre(BaseModel):
@@ -7,15 +7,15 @@ class Genre(BaseModel):
 
 
 class Author(BaseModel):
-	first_name: str
+	first_name: str = Field(..., max_length=25)
 	last_name: str
-	age: int
+	age: int = Field(..., gt=15, lt=90, description='Author age must be more than 15 and less than 90')
 
-	@validator('age')
-	def check_age(cls, v):
-		if v < 15:
-			raise ValueError('Author age must be more than 15')
-		return v
+	# @validator('age')
+	# def check_age(cls, v):
+	# 	if v < 15:
+	# 		raise ValueError('Author age must be more than 15')
+	# 	return v
 
 
 class Book(BaseModel):
